@@ -1,0 +1,164 @@
+% HapticVision AI — Póster 60×200 cm
+% Compilar: lualatex poster.tex
+\documentclass[final]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[size=custom,width=60,height=200,scale=1.5]{beamerposter}
+\usetheme{gemini}
+\usecolortheme{uchicago}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{ragged2e}
+\usepackage{xcolor}
+\usepackage{array}
+
+% Placeholder imagen: \imgplaceholder[alto]{descripción}
+\newcommand{\imgplaceholder}[2][20cm]{%
+  \begin{center}
+    \fcolorbox{gray!40}{gray!8}{%
+      \parbox[c][#1][c]{0.90\linewidth}{%
+        \centering\color{gray!55}\small\itshape [#2]%
+      }%
+    }%
+  \end{center}%
+}
+
+% ── Metadatos ──────────────────────────────────────────────
+\title{{\fontsize{56}{62}\selectfont\textbf{HapticVision AI}}}
+\author{Roberto C. Méndez Ortiz\quad Alan Paez Ascencio\quad Eliu D. Gudiño Villaseñor}
+\institute{CUCEI · Universidad de Guadalajara}
+\footercontent{\hfill Presentación de Proyectos Modulares 2024B \hfill}
+
+\begin{document}
+
+% Logos
+\addtobeamertemplate{headline}{}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west,inner sep=2.5cm]
+      at ([xshift=-2.5cm,yshift=2.5cm]current page.north west)
+      {\includegraphics[height=6cm]{logos/cuceiEsquinas.eps}};
+    \node[anchor=north east,inner sep=2.5cm]
+      at ([xshift=2cm,yshift=2cm]current page.north east)
+      {\includegraphics[height=5cm]{logos/logos.eps}};
+  \end{tikzpicture}%
+}
+
+\begin{frame}[t]
+\begin{columns}[t]
+
+%% ── COLUMNA IZQUIERDA ──────────────────────────────────────
+\begin{column}{0.46\textwidth}
+
+\begin{block}{Introducción}
+  Sistema de \textbf{sustitución sensorial háptica} que transforma información del entorno en feedback vibrotáctil para usuarios con discapacidad visual. Operación autónoma, sin conectividad externa.
+  \medskip
+  \imgplaceholder[40cm]{Prototipo del sistema}
+\end{block}
+\bigskip
+
+\begin{block}{Arquitectura y Diseño}
+  \begin{center}
+  \begin{tikzpicture}[
+    node distance=0.8cm and 0.5cm,
+    box/.style={draw=gray!50,fill=gray!8,rounded corners=4pt,
+                text width=3.5cm,align=center,minimum height=1.1cm,font=\small},
+    arr/.style={->,thick,gray!55}]
+    \node[box](tof){ToF VL53L1X};
+    \node[box,right=of tof](imu){IMU MPU-6050};
+    \node[box,below=0.9cm of tof,xshift=1.75cm](ard){Arduino Nano\\{\footnotesize PID + I²C}};
+    \node[box,below=1cm of ard](rpi){Raspberry Pi 4\\{\footnotesize YOLOv8 + APF}};
+    \node[box,below=1cm of rpi](hap){Matriz Háptica\\{\footnotesize 6 motores ERM}};
+    \draw[arr](tof)--(ard); \draw[arr](imu)--(ard);
+    \draw[arr](ard)--(rpi); \draw[arr](rpi)--(hap);
+  \end{tikzpicture}
+  \end{center}
+  Pipeline de procesamiento: adquisición multisensor $\to$ detección YOLOv8 $\to$ control PID $\to$ codificación háptica.
+  \medskip
+  \imgplaceholder[38cm]{Arquitectura de hardware y flujo de datos}
+\end{block}
+\bigskip
+
+\end{column}
+
+%% ── SEPARADOR ─────────────────────────────────────────────
+\begin{column}{0.04\textwidth}\end{column}
+
+%% ── COLUMNA DERECHA ────────────────────────────────────────
+\begin{column}{0.46\textwidth}
+
+\begin{block}{Análisis Comparativo}
+  La solución propuesta se distingue por integrar \textbf{detección 3D}, \textbf{feedback háptico} y \textbf{procesamiento embebido}, características no disponibles simultáneamente en sistemas existentes.
+  \smallskip
+  \begin{center}
+  \renewcommand{\arraystretch}{2.0}
+  \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \textbf{Rasgo} & \textbf{HV-AI} & \textbf{Bastón} & \textbf{OrCam} & \textbf{MS Seeing} \\
+    \hline
+    Detección obstáculos aéreos & \checkmark & $\times$ & \checkmark & \checkmark \\
+    \hline
+    Interfaz vibrotáctil & \checkmark & $\times$ & $\times$ & $\times$ \\
+    \hline
+    Sistema autónomo & \checkmark & \checkmark & \checkmark & $\times$ \\
+    \hline
+    Costo accesible (\$<300) & \checkmark & \checkmark & $\times$ & $\times$ \\
+    \hline
+    Tiempo real embebido & \checkmark & \checkmark & $\times$ & $\times$ \\
+    \hline
+  \end{tabular}
+  \end{center}
+\end{block}
+\bigskip
+
+\begin{block}{Resultados Experimentales}
+  \begin{itemize}
+    \item \textbf{Latencia de control:} $<$18 ms
+    \item \textbf{Inferencia:} $<$100 ms/fotograma
+    \item \textbf{Autonomía:} 4 horas (3000 mAh)
+    \item \textbf{Validación:} Usuario con discapacidad visual
+  \end{itemize}
+  \medskip
+  \imgplaceholder[38cm]{Resultados de detección y mapeo}
+\end{block}
+\bigskip
+
+\begin{block}{Conclusiones}
+  Sistema viable y de bajo costo con feedback háptico en tiempo real. Procesamiento embebido sin dependencia de conectividad. Potencial comprobado para mejorar movilidad en usuarios con discapacidad visual.
+\end{block}
+\bigskip
+
+\begin{exampleblock}{Referencias}
+  \begin{footnotesize}
+  \begin{thebibliography}{99}
+  \bibitem{bach2022} Bach-Faig, A., et al. (2022). ``Sensory Substitution Systems for Visual Impairment,'' \textit{IEEE Trans. Neural Syst. Rehabil. Eng.}, vol. 30, pp. 1234-1245.
+  \bibitem{redmon2016} Redmon, J., \& Farhadi, A. (2016). ``You Only Look Once: Unified, Real-Time Object Detection,'' \textit{CVPR}, pp. 779-788.
+  \bibitem{armando2021} Armando, A., et al. (2021). ``Tactile Feedback in Navigation Systems,'' \textit{J. Assistive Technol.}, vol. 15, no. 2, pp. 98-110.
+  \bibitem{chen2020} Chen, L., et al. (2020). ``Low-Cost Haptic Interfaces for Accessibility,'' \textit{ACM Trans. Access. Comput.}, vol. 13, no. 1, pp. 1-28.
+  \end{thebibliography}
+  \end{footnotesize}
+\end{exampleblock}
+\vspace{2cm}
+
+\begin{block}{Información Adicional}
+  \vspace{0.5cm}
+  \begin{columns}[t]
+    \begin{column}{0.47\textwidth}
+      \centering
+      \imgplaceholder[20cm]{QR Repositorio}
+      \small Repositorio GitHub
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \centering
+      \imgplaceholder[20cm]{QR Presentación}
+      \small Presentación Web
+    \end{column}
+  \end{columns}
+  \vspace{0.5cm}
+\end{block}
+
+\end{column}
+\end{columns}
+\end{frame}
+\end{document}

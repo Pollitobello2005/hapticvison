@@ -1,0 +1,9 @@
+poster/
+frames/
+frames2/
+.git/
+.next/
+node_modules/
+*.md
+.env.local
+.env.*.local
