@@ -354,7 +354,7 @@ class CanvAscii {
     const time = Date.now() * 0.001
     this.textCanvas.render()
     this.texture.needsUpdate = true
-    this.mesh.material.uniforms.uTime.value = Math.sin(time)
+    this.material.uniforms.uTime.value = Math.sin(time)
     this.updateRotation()
     this.filter.render(this.scene, this.camera)
   }
