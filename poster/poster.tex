@@ -10,6 +10,7 @@
 \usepackage{caption}
 \usepackage{booktabs}
 \usepackage{tikz}
+\usetikzlibrary{positioning}
 \usepackage{ragged2e}
 \usepackage{xcolor}
 \usepackage{array}
@@ -26,7 +27,7 @@
 }
 
 % ── Metadatos ──────────────────────────────────────────────
-\title{{\fontsize{56}{62}\selectfont\textbf{HapticVision AI}}}
+\title{{\fontsize{64}{70}\selectfont\textbf{HapticVision AI}}}
 \author{Roberto C. Méndez Ortiz\quad Alan Paez Ascencio\quad Eliu D. Gudiño Villaseñor}
 \institute{CUCEI · Universidad de Guadalajara}
 \footercontent{\hfill Presentación de Proyectos Modulares 2024B \hfill}
@@ -54,27 +55,38 @@
 \begin{block}{Introducción}
   Sistema de \textbf{sustitución sensorial háptica} que transforma información del entorno en feedback vibrotáctil para usuarios con discapacidad visual. Operación autónoma, sin conectividad externa.
   \medskip
-  \imgplaceholder[40cm]{Prototipo del sistema}
+  \imgplaceholder[28cm]{Prototipo del sistema}
 \end{block}
 \bigskip
 
 \begin{block}{Arquitectura y Diseño}
   \begin{center}
   \begin{tikzpicture}[
-    node distance=0.8cm and 0.5cm,
+    node distance=1.0cm and 1.2cm,
     box/.style={draw=gray!50,fill=gray!8,rounded corners=4pt,
-                text width=3.5cm,align=center,minimum height=1.1cm,font=\small},
+                text width=4.8cm,align=center,minimum height=1.25cm,font=\scriptsize},
     arr/.style={->,thick,gray!55}]
-    \node[box](tof){ToF VL53L1X};
-    \node[box,right=of tof](imu){IMU MPU-6050};
-    \node[box,below=0.9cm of tof,xshift=1.75cm](ard){Arduino Nano\\{\footnotesize PID + I²C}};
-    \node[box,below=1cm of ard](rpi){Raspberry Pi 4\\{\footnotesize YOLOv8 + APF}};
-    \node[box,below=1cm of rpi](hap){Matriz Háptica\\{\footnotesize 6 motores ERM}};
+    \node[box](tof){ToF\\VL53L1X};
+    \node[box,right=of tof](imu){IMU\\MPU-6050};
+    \node[box,below=of tof,xshift=2.4cm](ard){Arduino Nano\\PID + I²C};
+    \node[box,below=of ard](rpi){Raspberry Pi 4\\YOLOv8 + APF};
+    \node[box,below=of rpi](hap){Matriz Háptica\\6 motores ERM};
     \draw[arr](tof)--(ard); \draw[arr](imu)--(ard);
     \draw[arr](ard)--(rpi); \draw[arr](rpi)--(hap);
   \end{tikzpicture}
   \end{center}
   Pipeline de procesamiento: adquisición multisensor $\to$ detección YOLOv8 $\to$ control PID $\to$ codificación háptica.
+  \smallskip
+  \begin{center}
+  \begin{minipage}{0.92\linewidth}
+    \centering
+    \begin{tabular}{p{0.25\linewidth}p{0.63\linewidth}}
+      \textbf{Entrada} & Lecturas sincronizadas de distancia e inclinación para estimar la escena cercana. \\
+      \textbf{Procesamiento} & Fusión de señales, detección de obstáculos y generación de trayectorias seguras en tiempo real. \\
+      \textbf{Salida} & Activación de la matriz háptica con patrones vibrotáctiles proporcionales al riesgo detectado. \\
+    \end{tabular}
+  \end{minipage}
+  \end{center}
   \medskip
   \imgplaceholder[38cm]{Arquitectura de hardware y flujo de datos}
 \end{block}
