@@ -1,7 +1,7 @@
 "use client"
 
 import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from "ogl"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import "./CircularGallery.css"
 
 /* ─── Utilities ──────────────────────────────────────────────────────────── */
@@ -74,7 +74,7 @@ class Title {
 class Media {
   extra = 0; x = 0; width = 0; widthTotal = 0; padding = 0; scale = 0; speed = 0
   isBefore = false; isAfter = false
-  gl: any; geometry: any; image: string; index: number; length: number
+  gl!: any; geometry!: any; image!: string; index!: number; length!: number
   renderer: any; scene: any; screen: any; text: string; viewport: any
   bend: number; textColor: string; borderRadius: number; font: string
   program: any; plane: any; title: any
@@ -141,20 +141,33 @@ class Media {
     this.widthTotal = this.width * this.length
     this.x = this.width * this.index
   }
+
+  /** Returns the normalised X position in viewport space (0 = centre). */
+  get normX() {
+    if (!this.viewport) return Infinity
+    return Math.abs(this.plane.position.x) / (this.viewport.width / 2)
+  }
 }
 
 /* ─── App ────────────────────────────────────────────────────────────────── */
 class App {
   container: HTMLElement; scroll: any; screen: any; viewport: any; raf: number = 0
   renderer: any; gl: any; camera: any; scene: any; planeGeometry: any; medias: Media[] = []
-  mediasImages: any[] = []; scrollSpeed: number
+  mediasImages: any[]; scrollSpeed: number
   boundOnResize: any; boundOnWheel: any; boundOnTouchDown: any; boundOnTouchMove: any; boundOnTouchUp: any
   isDown = false; start = 0; onCheckDebounce: any
+  onHoverChange: (index: number | null) => void
 
-  constructor(container: HTMLElement, { items, bend = 3, textColor = "#ffffff", borderRadius = 0, font = "bold 30px sans-serif", scrollSpeed = 2, scrollEase = 0.05 }: any = {}) {
+  constructor(
+    container: HTMLElement,
+    { items, bend = 3, textColor = "#ffffff", borderRadius = 0, font = "bold 30px sans-serif", scrollSpeed = 2, scrollEase = 0.05 }: any = {},
+    onHoverChange: (index: number | null) => void = () => {}
+  ) {
     this.container = container; this.scrollSpeed = scrollSpeed
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 }
+    this.mediasImages = []
     this.onCheckDebounce = debounce(this.onCheck.bind(this), 200)
+    this.onHoverChange = onHoverChange
     this.createRenderer(); this.createCamera(); this.createScene(); this.onResize()
     this.createGeometry(); this.createMedias(items, bend, textColor, borderRadius, font)
     this.update(); this.addEventListeners()
@@ -205,12 +218,30 @@ class App {
     this.medias?.forEach((m) => m.onResize({ screen: this.screen, viewport: this.viewport }))
   }
 
+  lastHoveredIndex: number | null = null
+
   update() {
     this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease)
     const dir = this.scroll.current > this.scroll.last ? "right" : "left"
     this.medias?.forEach((m) => m.update(this.scroll, dir))
     this.renderer.render({ scene: this.scene, camera: this.camera })
     this.scroll.last = this.scroll.current
+
+    // Find the media closest to centre (normX closest to 0)
+    let minNorm = Infinity, centreIdx: number | null = null
+    this.medias?.forEach((m, i) => {
+      const n = m.normX
+      if (n < minNorm) { minNorm = n; centreIdx = i }
+    })
+    // Only fire callback when the centred item changes
+    // Map back to original items array length (duplication)
+    const originalLen = this.mediasImages.length / 2
+    const mapped = centreIdx !== null ? centreIdx % originalLen : null
+    if (mapped !== this.lastHoveredIndex) {
+      this.lastHoveredIndex = mapped
+      this.onHoverChange(mapped)
+    }
+
     this.raf = requestAnimationFrame(this.update.bind(this))
   }
 
@@ -244,8 +275,13 @@ class App {
   }
 }
 
-/* ─── React Component ────────────────────────────────────────────────────── */
-export interface GalleryItem { image: string; text: string }
+/* ─── Types ──────────────────────────────────────────────────────────────── */
+export interface GalleryItem {
+  image: string
+  text: string
+  /** Short description shown in the info panel below the gallery */
+  description?: string
+}
 
 interface Props {
   items?: GalleryItem[]
@@ -257,12 +293,65 @@ interface Props {
   scrollEase?: number
 }
 
-export default function CircularGallery({ items, bend = 3, textColor = "#ffffff", borderRadius = 0.05, font = "bold 28px sans-serif", scrollSpeed = 2, scrollEase = 0.05 }: Props) {
+/* ─── React Component ────────────────────────────────────────────────────── */
+export default function CircularGallery({
+  items,
+  bend = 3,
+  textColor = "#ffffff",
+  borderRadius = 0.05,
+  font = "bold 28px sans-serif",
+  scrollSpeed = 2,
+  scrollEase = 0.05,
+}: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [activeIndex, setActiveIndex] = useState<number | null>(null)
+
+  // Resolve the effective items list (same logic as App.createMedias)
+  const effectiveItems: GalleryItem[] = items?.length
+    ? items
+    : [
+        { image: "https://picsum.photos/seed/hv1/800/600", text: "Matriz Háptica" },
+        { image: "https://picsum.photos/seed/hv2/800/600", text: "Sensor ToF" },
+        { image: "https://picsum.photos/seed/hv3/800/600", text: "Pan & Tilt" },
+        { image: "https://picsum.photos/seed/hv4/800/600", text: "IMU MPU-6050" },
+        { image: "https://picsum.photos/seed/hv5/800/600", text: "Arduino Nano" },
+        { image: "https://picsum.photos/seed/hv6/800/600", text: "Raspberry Pi 4" },
+        { image: "https://picsum.photos/seed/hv7/800/600", text: "YOLOv8 Tiny" },
+        { image: "https://picsum.photos/seed/hv8/800/600", text: "Dataset Propio" },
+      ]
+
+  const handleHoverChange = useCallback((index: number | null) => {
+    setActiveIndex(index)
+  }, [])
+
   useEffect(() => {
     if (!containerRef.current) return
-    const app = new App(containerRef.current, { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase })
+    const app = new App(
+      containerRef.current,
+      { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase },
+      handleHoverChange
+    )
     return () => app.destroy()
-  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase])
-  return <div className="circular-gallery" ref={containerRef} />
+  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase, handleHoverChange])
+
+  const activeItem = activeIndex !== null ? effectiveItems[activeIndex] : null
+
+  return (
+    <div className="circular-gallery-wrapper">
+      {/* WebGL canvas */}
+      <div className="circular-gallery" ref={containerRef} />
+
+      {/* Info panel */}
+      <div className={`cg-info-panel${activeItem ? " cg-info-panel--visible" : ""}`}>
+        {activeItem && (
+          <>
+            <span className="cg-info-panel__tag">{activeItem.text}</span>
+            {activeItem.description && (
+              <p className="cg-info-panel__desc">{activeItem.description}</p>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  )
 }
