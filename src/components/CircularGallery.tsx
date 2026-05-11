@@ -75,9 +75,9 @@ class Media {
   extra = 0; x = 0; width = 0; widthTotal = 0; padding = 0; scale = 0; speed = 0
   isBefore = false; isAfter = false
   gl!: any; geometry!: any; image!: string; index!: number; length!: number
-  renderer: any; scene: any; screen: any; text: string; viewport: any
-  bend: number; textColor: string; borderRadius: number; font: string
-  program: any; plane: any; title: any
+  renderer!: any; scene!: any; screen!: any; text!: string; viewport!: any
+  bend!: number; textColor!: string; borderRadius!: number; font!: string
+  program!: any; plane!: any; title!: any
 
   constructor({ geometry, gl, image, index, length, renderer, scene, screen, text, viewport, bend, textColor, borderRadius = 0, font }: any) {
     Object.assign(this, { geometry, gl, image, index, length, renderer, scene, screen, text, viewport, bend, textColor, borderRadius, font })
