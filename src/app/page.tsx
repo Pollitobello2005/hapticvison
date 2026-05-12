@@ -273,11 +273,13 @@ export default function Home() {
         </div>
       </section>
 
+      <div className="h-24 md:h-40" aria-hidden="true" />
+
       {/* ── Módulos del Sistema ── */}
-      <section className="bg-transparent py-48 px-6">
+      <section className="bg-transparent pt-56 pb-72 px-6 md:pt-80">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="flex flex-col items-center text-center mb-32">
+          <div className="flex flex-col items-center text-center mb-64 pt-8 md:pt-16">
             <p className="text-xs font-semibold tracking-[0.28em] uppercase text-indigo-500 mb-4">
               Arquitectura del Sistema
             </p>
@@ -291,7 +293,7 @@ export default function Home() {
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mt-12 md:mt-20">
 
           {/* ── Módulo 1: Sistemas de Control ── */}
           <div className="module-card">
