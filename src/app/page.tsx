@@ -48,10 +48,10 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Estabilización Inercial",
     title: "La cabeza se mueve. La percepción no.",
     description:
-      "La IMU MPU-6050 detecta cada giro de cabeza. Un controlador PID corrige el servo en tiempo real para mantener el plano de escaneo estable.",
+      "IMU MPU-6050 detecta giros de cabeza. Controlador PID mantiene el escaneo estable.",
     specs: [
-      { icon: "🧭", text: "IMU MPU-6050 — ángulos de Euler" },
-      { icon: "🎯", text: "PID digital de lazo cerrado" },
+      { icon: "🧭", text: "IMU MPU-6050" },
+      { icon: "🎯", text: "PID de lazo cerrado" },
     ],
   },
   {
@@ -59,7 +59,7 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Capa de Control",
     title: "Arduino: reflejos de microsegundos.",
     description:
-      "El Arduino Nano cierra los lazos de control PID y gestiona el PWM. Ningún sistema operativo entre el sensor y la respuesta.",
+      "Arduino Nano cierra los lazos de control sin SO entre sensor y respuesta.",
     specs: [
       { icon: "⚙️", text: "Bus I²C: PCA9685 + ToF + IMU" },
       { icon: "🔗", text: "Serial → Raspberry Pi 4" },
@@ -70,10 +70,10 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Navegación",
     title: "Campos de fuerza que dibujan el camino.",
     description:
-      "Cada obstáculo genera un vector de repulsión. La resultante de todo el semicírculo frontal señala la ruta libre y la traduce a vibración direccional.",
+      "Algoritmo APF: cada obstáculo repele, la resultante señala la ruta libre en vibración.",
     specs: [
-      { icon: "🗺️", text: "Algoritmo APF expandido" },
-      { icon: "↔️", text: "Corrección háptica izquierda/derecha" },
+      { icon: "🗺️", text: "Algoritmo APF" },
+      { icon: "↔️", text: "Vibración izquierda/derecha" },
     ],
   },
 
@@ -83,10 +83,10 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Cerebro de IA",
     title: "Raspberry Pi 4. Edge AI en tu bolsillo.",
     description:
-      "Toda la inteligencia vive en una RPi 4 de 4 GB. Inferencia local, sin nube, sin latencia de red.",
+      "RPi 4 con 4 GB: inferencia local, sin nube, sin latencia de red.",
     specs: [
-      { icon: "🧠", text: "Raspberry Pi 4 — 4 GB RAM" },
-      { icon: "📷", text: "1× Cámara RPi v2 (8 MP)" },
+      { icon: "🧠", text: "Raspberry Pi 4" },
+      { icon: "📷", text: "Cámara RPi v2" },
     ],
   },
   {
@@ -94,10 +94,10 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Visión Computacional",
     title: "Lo que el sensor no puede ver.",
     description:
-      "El ToF detecta geometría, no semántica. YOLOv8 Tiny cubre los peligros críticos para ciegos: ramas, escaleras en declive, pozos, coches en movimiento.",
+      "ToF detecta geometría, no semántica. YOLOv8 Tiny cubre peligros críticos: ramas, escaleras, pozos, vehículos.",
     specs: [
-      { icon: "⚠️", text: "Peligros: ramas · pozos · escaleras · coches" },
-      { icon: "🎯", text: "YOLOv8 Tiny — inferencia en RPi" },
+      { icon: "⚠️", text: "Peligros: ramas · escaleras · pozos" },
+      { icon: "🎯", text: "YOLOv8 Tiny" },
     ],
   },
   {
@@ -105,10 +105,10 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Dataset Propio",
     title: "Entrenado para los peligros que nadie etiquetó.",
     description:
-      "Construimos nuestro propio dataset en Roboflow con los obstáculos más peligrosos para ciegos. Validado en campo con una persona invidente real.",
+      "Dataset en Roboflow con obstáculos peligrosos para ciegos. Validado en campo.",
     specs: [
-      { icon: "🏷️", text: "Dataset custom — Roboflow + transfer learning" },
-      { icon: "👤", text: "Validación con usuario invidente real" },
+      { icon: "🏷️", text: "Dataset custom — Roboflow" },
+      { icon: "👤", text: "Validación con usuario invidente" },
     ],
   },
   {
@@ -116,7 +116,7 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Visual Servoing",
     title: "La cámara le da prioridad al peligro.",
     description:
-      "Si la visión detecta una escalera descendente, el servo interrumpe el barrido y apunta directo al riesgo para medición exacta de distancia.",
+      "El servo interrumpe el barrido ante escaleras descendentes para medición exacta.",
     specs: [
       { icon: "🚨", text: "Interrupción por riesgo crítico" },
       { icon: "📏", text: "Fusión cámara + ToF" },
@@ -291,7 +291,7 @@ export default function Home() {
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mx-auto max-w-6xl">
 
           {/* ── Módulo 1: Sistemas de Control ── */}
           <div className="module-card">
@@ -301,17 +301,11 @@ export default function Home() {
             <p className="module-card__tag">Módulo 1</p>
             <h3 className="module-card__title">Sistemas de Control</h3>
             <p className="module-card__desc">
-              Cierra los lazos de retroalimentación en tiempo real. El
-              controlador PID lee la IMU MPU-6050, corrige el servo del
-              mecanismo pan &amp; tilt y mantiene el plano de escaneo estable
-              sin importar los movimientos de cabeza del usuario.
+              PID en tiempo real. Arduino mantiene estable el escaneo independientemente de los movimientos.
             </p>
             <ul className="module-card__list">
-              <li><span className="module-card__bullet" />Arduino Nano — controlador de tiempo real</li>
-              <li><span className="module-card__bullet" />PID digital de lazo cerrado</li>
-              <li><span className="module-card__bullet" />Driver PCA9685 — PWM 12 bits</li>
-              <li><span className="module-card__bullet" />Mecanismo pan &amp; tilt de servomotores</li>
-              <li><span className="module-card__bullet" />Bus I²C multidispositivo</li>
+              <li><span className="module-card__bullet" />Arduino Nano + PCA9685</li>
+              <li><span className="module-card__bullet" />Pan &amp; tilt servo + I²C</li>
             </ul>
           </div>
 
@@ -323,17 +317,11 @@ export default function Home() {
             <p className="module-card__tag" style={{ color: "#7c3aed" }}>Módulo 2</p>
             <h3 className="module-card__title">Sistemas Inteligentes</h3>
             <p className="module-card__desc">
-              Aporta la capa semántica que el sensor ToF no puede dar. Ejecuta
-              YOLOv8 Tiny localmente en la Raspberry Pi 4, detectando peligros
-              críticos para personas invidentes y fusionando visión con
-              distancia para generar alerts hápticas priorizadas.
+              YOLOv8 Tiny en Raspberry Pi detecta peligros críticos: escaleras, ramas, pozos. Sin nube.
             </p>
             <ul className="module-card__list">
-              <li><span className="module-card__bullet" style={{ background: "#7c3aed" }} />Raspberry Pi 4 — 4 GB RAM, Edge AI</li>
-              <li><span className="module-card__bullet" style={{ background: "#7c3aed" }} />YOLOv8 Tiny — inferencia local</li>
-              <li><span className="module-card__bullet" style={{ background: "#7c3aed" }} />Dataset propio en Roboflow</li>
-              <li><span className="module-card__bullet" style={{ background: "#7c3aed" }} />Algoritmo APF de navegación</li>
-              <li><span className="module-card__bullet" style={{ background: "#7c3aed" }} />Visual servoing — fusión cámara + ToF</li>
+              <li><span className="module-card__bullet" style={{ background: "#7c3aed" }} />Raspberry Pi 4 + YOLOv8</li>
+              <li><span className="module-card__bullet" style={{ background: "#7c3aed" }} />Dataset personalizado en Roboflow</li>
             </ul>
           </div>
 
@@ -345,17 +333,11 @@ export default function Home() {
             <p className="module-card__tag" style={{ color: "#0ea5e9" }}>Módulo 3</p>
             <h3 className="module-card__title">Sistemas Electrónicos</h3>
             <p className="module-card__desc">
-              La capa física del dispositivo. Integra los sensores, actuadores
-              y la electrónica de potencia en un armazón portable. Cada
-              componente fue seleccionado por su bajo consumo, tamaño compacto
-              y fiabilidad en campo.
+              ToF + IMU + 6 motores hápticos en un armazón compacto y portable.
             </p>
             <ul className="module-card__list">
-              <li><span className="module-card__bullet" style={{ background: "#0ea5e9" }} />Sensor ToF VL53L1X — 4 m de rango</li>
-              <li><span className="module-card__bullet" style={{ background: "#0ea5e9" }} />IMU MPU-6050 — 6 DOF</li>
-              <li><span className="module-card__bullet" style={{ background: "#0ea5e9" }} />Matriz de 6 motores ERM Coin</li>
-              <li><span className="module-card__bullet" style={{ background: "#0ea5e9" }} />Cámara RPi v2 — 8 MP</li>
-              <li><span className="module-card__bullet" style={{ background: "#0ea5e9" }} />Power bank 10 000 mAh — 100% portátil</li>
+              <li><span className="module-card__bullet" style={{ background: "#0ea5e9" }} />ToF VL53L1X + IMU + 6 motores ERM</li>
+              <li><span className="module-card__bullet" style={{ background: "#0ea5e9" }} />Power bank 10 000 mAh</li>
             </ul>
           </div>
 
@@ -378,8 +360,7 @@ export default function Home() {
               Del problema a la solución.
             </h2>
             <p className="text-gray-500 mt-2 text-lg max-w-2xl leading-relaxed">
-              Un proceso iterativo de identificación, prototipado, validación
-              en campo y mejora continua centrado en el usuario invidente.
+              Identificación, prototipado, validación en campo y mejora continua.
             </p>
           </div>
 
@@ -397,19 +378,10 @@ export default function Home() {
                   ¿Por qué los dispositivos actuales no son suficientes?
                 </h3>
                 <p className="research-block__desc">
-                  Más de 2.2 billones de personas en el mundo viven con
-                  discapacidad visual. Las soluciones dominantes —bastón
-                  blanco y perro guía— sólo detectan obstáculos al nivel del
-                  suelo y no ofrecen información semántica del entorno. Los
-                  dispositivos electrónicos existentes (sonar, cámaras con
-                  voz) tienen alta latencia, alto costo o requieren
-                  conectividad constante a la nube.
+                  2.2 billones de personas con discapacidad visual viven con limitaciones. El bastón y el perro guía solo detectan el piso. Los dispositivos electrónicos existentes son caros, lentos y requieren conexión a la nube.
                 </p>
                 <p className="research-block__desc" style={{ marginTop: "1rem" }}>
-                  HapticVision AI nació de tres preguntas de investigación
-                  concretas: ¿Cómo codificar el espacio en vibración
-                  intuitiva? ¿Cómo detectar peligros invisibles al ToF?
-                  ¿Cómo hacer todo esto portable, asequible y sin red?
+                  HapticVision AI responde tres preguntas: ¿Codificar espacio en vibración? ¿Detectar peligros invisibles al ToF? ¿Hacerlo portable, asequible y sin red?
                 </p>
               </div>
               <div className="research-stat-grid">
