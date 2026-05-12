@@ -46,7 +46,7 @@
   \end{tikzpicture}%
 }
 
-\begin{frame}[t]
+\begin{frame}[c]
 \begin{columns}[t]
 
 %% ── COLUMNA IZQUIERDA ──────────────────────────────────────
@@ -55,40 +55,23 @@
 \begin{block}{Introducción}
   Sistema de \textbf{sustitución sensorial háptica} que transforma información del entorno en feedback vibrotáctil para usuarios con discapacidad visual. Operación autónoma, sin conectividad externa.
   \medskip
-  \imgplaceholder[28cm]{Prototipo del sistema}
+  \begin{center}
+    \includegraphics[height=18cm,keepaspectratio]{RoboticaPoster/Figures/frame_0038.jpg}
+    \\[6pt]
+    \small Prototipo del sistema
+  \end{center}
 \end{block}
 \bigskip
 
 \begin{block}{Arquitectura y Diseño}
   \begin{center}
-  \begin{tikzpicture}[
-    node distance=1.0cm and 1.2cm,
-    box/.style={draw=gray!50,fill=gray!8,rounded corners=4pt,
-                text width=4.8cm,align=center,minimum height=1.25cm,font=\scriptsize},
-    arr/.style={->,thick,gray!55}]
-    \node[box](tof){ToF\\VL53L1X};
-    \node[box,right=of tof](imu){IMU\\MPU-6050};
-    \node[box,below=of tof,xshift=2.4cm](ard){Arduino Nano\\PID + I²C};
-    \node[box,below=of ard](rpi){Raspberry Pi 4\\YOLOv8 + APF};
-    \node[box,below=of rpi](hap){Matriz Háptica\\6 motores ERM};
-    \draw[arr](tof)--(ard); \draw[arr](imu)--(ard);
-    \draw[arr](ard)--(rpi); \draw[arr](rpi)--(hap);
-  \end{tikzpicture}
-  \end{center}
-  Pipeline de procesamiento: adquisición multisensor $\to$ detección YOLOv8 $\to$ control PID $\to$ codificación háptica.
-  \smallskip
-  \begin{center}
-  \begin{minipage}{0.92\linewidth}
-    \centering
-    \begin{tabular}{p{0.25\linewidth}p{0.63\linewidth}}
-      \textbf{Entrada} & Lecturas sincronizadas de distancia e inclinación para estimar la escena cercana. \\
-      \textbf{Procesamiento} & Fusión de señales, detección de obstáculos y generación de trayectorias seguras en tiempo real. \\
-      \textbf{Salida} & Activación de la matriz háptica con patrones vibrotáctiles proporcionales al riesgo detectado. \\
-    \end{tabular}
+  \begin{minipage}{0.9\linewidth}
+    \small
+    Sistema wearable de asistencia para personas con discapacidad visual que combina mapeo de distancia con ToF, estabilización por MPU-6050 y PID, visión con Raspberry Pi (YOLOv8) y salida háptica controlada por Arduino Nano. PCA9685 genera PWM, ULN2003A alimenta los motores y todo opera con power bank de 5\,V.
   \end{minipage}
   \end{center}
   \medskip
-  \imgplaceholder[38cm]{Arquitectura de hardware y flujo de datos}
+  Pipeline: ToF $\to$ visión $\to$ fusión $\to$ matriz háptica.
 \end{block}
 \bigskip
 
@@ -107,7 +90,7 @@
   \renewcommand{\arraystretch}{2.0}
   \begin{tabular}{|l|c|c|c|c|}
     \hline
-    \textbf{Rasgo} & \textbf{HV-AI} & \textbf{Bastón} & \textbf{OrCam} & \textbf{MS Seeing} \\
+      \textbf{Rasgo} & \textbf{HV-AI} & \textbf{Bastón} & \textbf{OrCam} & \textbf{MS Seeing} \\
     \hline
     Detección obstáculos aéreos & \checkmark & $\times$ & \checkmark & \checkmark \\
     \hline
@@ -132,7 +115,9 @@
     \item \textbf{Validación:} Usuario con discapacidad visual
   \end{itemize}
   \medskip
-  \imgplaceholder[38cm]{Resultados de detección y mapeo}
+  \begin{center}
+    \includegraphics[height=22cm,keepaspectratio]{RoboticaPoster/Figures/deteccion.png}
+  \end{center}
 \end{block}
 \bigskip
 
@@ -144,10 +129,10 @@
 \begin{exampleblock}{Referencias}
   \begin{footnotesize}
   \begin{thebibliography}{99}
-  \bibitem{bach2022} Bach-Faig, A., et al. (2022). ``Sensory Substitution Systems for Visual Impairment,'' \textit{IEEE Trans. Neural Syst. Rehabil. Eng.}, vol. 30, pp. 1234-1245.
-  \bibitem{redmon2016} Redmon, J., \& Farhadi, A. (2016). ``You Only Look Once: Unified, Real-Time Object Detection,'' \textit{CVPR}, pp. 779-788.
-  \bibitem{armando2021} Armando, A., et al. (2021). ``Tactile Feedback in Navigation Systems,'' \textit{J. Assistive Technol.}, vol. 15, no. 2, pp. 98-110.
-  \bibitem{chen2020} Chen, L., et al. (2020). ``Low-Cost Haptic Interfaces for Accessibility,'' \textit{ACM Trans. Access. Comput.}, vol. 13, no. 1, pp. 1-28.
+  \bibitem{bach2003} P. Bach-y-Rita and S. W. Kercel, "Sensory substitution and the plastic brain," Trends in Cognitive Sciences, vol. 7, no. 12, pp. 541--546, 2003. doi: 10.1016/j.tics.2003.10.013.
+  \bibitem{redmon2016} J. Redmon, S. Divvala, R. Girshick and A. Farhadi, "You Only Look Once: Unified, Real-Time Object Detection," Proc. IEEE Conf. Comput. Vis. Pattern Recognit. (CVPR), pp. 779--788, 2016.
+  \bibitem{caserman2020} S. Caserman, A. Garcia-Agundez and S. G\"obel, "A Survey of Full-Body Motion Reconstruction in Immersive Virtual Reality Applications," IEEE Trans. Visual. Comput. Graphics, vol. 26, no. 10, pp. 3089--3108, 2020. (Referencia clave para el uso de IMU y sensores inerciales).
+  \bibitem{katz2021} S. Katz, "Evaluation of haptic feedback for obstacle avoidance in wearable systems," J. Assistive Technol., vol. 15, no. 2, pp. 98--110, 2021.
   \end{thebibliography}
   \end{footnotesize}
 \end{exampleblock}
@@ -156,14 +141,14 @@
 \begin{block}{Información Adicional}
   \vspace{0.5cm}
   \begin{columns}[t]
-    \begin{column}{0.47\textwidth}
+    \begin{column}{0.48\textwidth}
       \centering
-      \imgplaceholder[20cm]{QR Repositorio}
+      \includegraphics[width=0.9\linewidth]{RoboticaPoster/Figures/logopaginahaptic.png}
       \small Repositorio GitHub
     \end{column}
-    \begin{column}{0.47\textwidth}
+    \begin{column}{0.48\textwidth}
       \centering
-      \imgplaceholder[20cm]{QR Presentación}
+      \includegraphics[width=0.9\linewidth]{RoboticaPoster/Figures/qrpresentacion.png}
       \small Presentación Web
     \end{column}
   \end{columns}

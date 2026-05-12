@@ -188,7 +188,38 @@ canvas {
 
 @media (max-width: 768px) {
   .research-block__body--two-col { grid-template-columns: 1fr; }
-  .research-block { padding: 32px 24px; }
+  .research-block { padding: 32px 24px; margin-bottom: 20px; }
+  .module-card { padding: 24px 20px 28px; }
+  .module-card__title { font-size: 1.2rem; }
+  .module-card__desc { font-size: 0.85rem; }
+  .research-block__title { font-size: 1.4rem; }
+  .research-block__desc { font-size: 0.88rem; }
+  .research-stat-grid { grid-template-columns: 1fr; }
+  .research-stat__value { font-size: 1.6rem; }
+}
+
+@media (max-width: 640px) {
+  .module-card { padding: 16px 14px 20px; gap: 10px; }
+  .module-card__title { font-size: 1rem; }
+  .module-card__desc { font-size: 0.8rem; }
+  .module-card__icon-wrap { width: 48px; height: 48px; }
+  .research-block { padding: 24px 16px; margin-bottom: 16px; gap: 16px; }
+  .research-block__title { font-size: 1.15rem; }
+  .research-block__desc { font-size: 0.8rem; }
+  .research-block__body--two-col { gap: 20px; }
+  .research-stat { padding: 14px 12px; }
+  .research-stat__value { font-size: 1.3rem; }
+  .research-stat__label { font-size: 0.7rem; }
+  .cg-info-panel { bottom: -70px; width: min(100vw - 24px, 90%); padding: 12px 16px; }
+  .cg-info-panel__desc { font-size: 0.85rem; }
+  .cg-info-panel__tag { font-size: 0.65rem; }
+  /* Hero Section */
+  h1 { font-size: 2rem !important; }
+  h2 { font-size: 1.75rem !important; }
+  p { font-size: 0.9rem !important; }
+  /* Paddings */
+  section { padding-left: 16px !important; padding-right: 16px !important; }
+  .max-w-6xl { margin-left: auto; margin-right: auto; }
 }
 
 /* ── Stat grid ───────────────────────────────────────────────────────────── */
