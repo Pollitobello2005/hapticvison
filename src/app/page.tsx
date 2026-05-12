@@ -274,23 +274,23 @@ export default function Home() {
       </section>
 
       {/* ── Módulos del Sistema ── */}
-      <section className="bg-transparent py-32 px-6">
+      <section className="bg-transparent py-48 px-6">
         {/* Header */}
-        <div className="flex flex-col items-center text-center mb-20">
-          <p className="text-xs font-semibold tracking-[0.28em] uppercase text-indigo-500 mb-3">
+        <div className="flex flex-col items-center text-center mb-32">
+          <p className="text-xs font-semibold tracking-[0.28em] uppercase text-indigo-500 mb-4">
             Arquitectura del Sistema
           </p>
-          <h2 className="text-5xl font-bold text-gray-900">
+          <h2 className="text-6xl font-bold text-gray-900 mb-6">
             Tres módulos. Un solo propósito.
           </h2>
-          <p className="text-gray-400 mt-4 text-base max-w-xl">
+          <p className="text-gray-500 mt-2 text-lg max-w-2xl leading-relaxed">
             HapticVision AI está organizado en tres capas especializadas que
             trabajan en sinergia para traducir el entorno en percepción háptica.
           </p>
         </div>
 
         {/* Cards */}
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
 
           {/* ── Módulo 1: Sistemas de Control ── */}
           <div className="module-card">
@@ -364,18 +364,18 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════════════════════
           SECCIÓN: METODOLOGÍA DE INVESTIGACIÓN
       ══════════════════════════════════════════════════════════════════ */}
-      <section className="bg-transparent py-32 px-6">
-        <div className="max-w-6xl mx-auto">
+      <section className="bg-transparent py-48 px-6">
+        <div className="max-w-7xl mx-auto">
 
           {/* ── Header ── */}
-          <div className="flex flex-col items-center text-center mb-24">
-            <p className="text-xs font-semibold tracking-[0.28em] uppercase text-indigo-500 mb-3">
+          <div className="flex flex-col items-center text-center mb-36">
+            <p className="text-xs font-semibold tracking-[0.28em] uppercase text-indigo-500 mb-4">
               Metodología de Investigación
             </p>
-            <h2 className="text-5xl font-bold text-gray-900">
+            <h2 className="text-6xl font-bold text-gray-900 mb-6">
               Del problema a la solución.
             </h2>
-            <p className="text-gray-400 mt-4 text-base max-w-2xl">
+            <p className="text-gray-500 mt-2 text-lg max-w-2xl leading-relaxed">
               Un proceso iterativo de identificación, prototipado, validación
               en campo y mejora continua centrado en el usuario invidente.
             </p>
