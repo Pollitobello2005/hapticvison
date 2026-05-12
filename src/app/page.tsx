@@ -193,7 +193,7 @@ export default function Home() {
       />
 
       {/* ── Galería circular ── */}
-      <section className="bg-transparent">
+      <section className="bg-transparent pb-48">
         {/* Header */}
         <div className="flex flex-col items-center justify-center pt-24 pb-10">
           <p className="text-xs font-semibold tracking-[0.28em] uppercase text-indigo-500 mb-3">
@@ -206,7 +206,7 @@ export default function Home() {
         </div>
 
         {/* Gallery — extra bottom padding to show the info panel */}
-        <div style={{ height: "720px", position: "relative" }}>
+        <div style={{ height: "720px", position: "relative", overflow: "hidden" }}>
           <CircularGallery
             bend={3}
             textColor="#1e1b4b"
@@ -275,22 +275,23 @@ export default function Home() {
 
       {/* ── Módulos del Sistema ── */}
       <section className="bg-transparent py-48 px-6">
-        {/* Header */}
-        <div className="flex flex-col items-center text-center mb-32">
-          <p className="text-xs font-semibold tracking-[0.28em] uppercase text-indigo-500 mb-4">
-            Arquitectura del Sistema
-          </p>
-          <h2 className="text-6xl font-bold text-gray-900 mb-6">
-            Tres módulos. Un solo propósito.
-          </h2>
-          <p className="text-gray-500 mt-2 text-lg max-w-2xl leading-relaxed">
-            HapticVision AI está organizado en tres capas especializadas que
-            trabajan en sinergia para traducir el entorno en percepción háptica.
-          </p>
-        </div>
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="flex flex-col items-center text-center mb-32">
+            <p className="text-xs font-semibold tracking-[0.28em] uppercase text-indigo-500 mb-4">
+              Arquitectura del Sistema
+            </p>
+            <h2 className="text-6xl font-bold text-gray-900 mb-6">
+              Tres módulos. Un solo propósito.
+            </h2>
+            <p className="text-gray-500 mt-2 text-lg max-w-2xl leading-relaxed">
+              HapticVision AI está organizado en tres capas especializadas que
+              trabajan en sinergia para traducir el entorno en percepción háptica.
+            </p>
+          </div>
 
-        {/* Cards */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+          {/* Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
           {/* ── Módulo 1: Sistemas de Control ── */}
           <div className="module-card">
@@ -358,6 +359,7 @@ export default function Home() {
             </ul>
           </div>
 
+          </div>
         </div>
       </section>
 
