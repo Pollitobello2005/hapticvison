@@ -13,12 +13,13 @@ const CHAPTERS: Chapter[] = [
   {
     from: 0,
     eyebrow: "HapticVision AI",
-    title: "Diseñado para ver lo invisible.",
+    title: "Diseñado para percibir lo que no puede verse.",
     description:
-      "Sustitución sensorial activa para personas con discapacidad visual. Bio-inspirado en la ecolocalización.",
+      "Sistema de sustitución sensorial activa para personas con discapacidad visual, inspirado en los principios de la ecolocalización.",
     specs: [
-      { icon: "👁️", text: "Campo de percepción: 180°" },
+      { icon: "👁️", text: "Campo de percepción horizontal de 90°" },
       { icon: "⚡", text: "Respuesta en tiempo real" },
+      { icon: "📳", text: "Retroalimentación háptica intuitiva" },
     ],
   },
   {
@@ -26,43 +27,47 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Matriz Háptica",
     title: "6 motores. Una frente. Un mapa.",
     description:
-      "Arreglo lineal de 6 motores ERM en el armazón. Cada vibración es un obstáculo. Tu frente aprende a ver.",
+      "Arreglo lineal de 4 motores vibratorios tipo moneda integrados en la diadema. Cada motor representa una región del entorno y su intensidad de vibración varía según la distancia al obstáculo.",
     specs: [
-      { icon: "🖐️", text: "6× Coin ERM — driver PCA9685" },
+      { icon: "🖐️", text: "4 × Motores vibratorios tipo moneda (ERM)" },
+      { icon: "🎛️", text: "Control mediante PCA9685" },
       { icon: "📶", text: "Modulación PWM de 12 bits" },
     ],
   },
   {
     from: 0.17,
     eyebrow: "Percepción Activa",
-    title: "Un pan & tilt que escanea el mundo.",
+    title: "Un pan & tilt que escanea el entorno.",
     description:
-      "El sensor ToF VL53L1X va montado sobre un mecanismo pan & tilt. Barre 180° de forma continua generando coordenadas polares del entorno.",
+      "El sensor ToF VL53L0X está montado sobre un mecanismo pan & tilt. Realiza un barrido horizontal de 90° para generar un mapa polar del entorno y determinar la dirección y distancia de los obstáculos.",
     specs: [
-      { icon: "📡", text: "ToF VL53L1X — precisión milimétrica" },
-      { icon: "🔄", text: "Mecanismo pan & tilt — barrido 180°" },
+      { icon: "📡", text: "Sensor ToF VL53L0X" },
+      { icon: "🎯", text: "Medición precisa de distancia" },
+      { icon: "🔄", text: "Mecanismo pan & tilt — barrido horizontal de 90°" },
     ],
   },
   {
     from: 0.25,
     eyebrow: "Estabilización Inercial",
-    title: "La cabeza se mueve. La percepción no.",
+    title: "Estabilización inercial del sistema de percepción.",
     description:
-      "IMU MPU-6050 detecta giros de cabeza. Controlador PID mantiene el escaneo estable.",
+      "La unidad de medición inercial (IMU) MPU-6050 detecta la inclinación de la cabeza del usuario. Un controlador PID ajusta automáticamente el eje vertical del mecanismo pan & tilt para mantener el sensor alineado con el horizonte. Esto evita mediciones erróneas cuando el usuario inclina la cabeza hacia arriba o hacia abajo.",
     specs: [
       { icon: "🧭", text: "IMU MPU-6050" },
-      { icon: "🎯", text: "PID de lazo cerrado" },
+      { icon: "🎯", text: "Control PID en lazo cerrado" },
+      { icon: "📐", text: "Compensación automática de inclinación" },
     ],
   },
   {
     from: 0.33,
     eyebrow: "Capa de Control",
-    title: "Arduino: reflejos de microsegundos.",
+    title: "Control en tiempo real con Arduino Nano.",
     description:
-      "Arduino Nano cierra los lazos de control sin SO entre sensor y respuesta.",
+      "El Arduino Nano adquiere las mediciones del sensor ToF y de la IMU, ejecuta el controlador PID y genera las señales de control para el sistema háptico y el mecanismo pan & tilt. Su operación sin sistema operativo garantiza una respuesta determinística y de baja latencia.",
     specs: [
-      { icon: "⚙️", text: "Bus I²C: PCA9685 + ToF + IMU" },
-      { icon: "🔗", text: "Serial → Raspberry Pi 4" },
+      { icon: "⚙️", text: "Bus I²C: PCA9685 + VL53L0X + MPU-6050" },
+      { icon: "🔗", text: "Comunicación serial con Raspberry Pi 4" },
+      { icon: "⏱️", text: "Procesamiento en tiempo real" },
     ],
   },
   {
@@ -80,68 +85,73 @@ const CHAPTERS: Chapter[] = [
   /* ── SECUENCIA 2 — El sistema de IA (cables) ── */
   {
     from: 0.5,
-    eyebrow: "Cerebro de IA",
-    title: "Raspberry Pi 4. Edge AI en tu bolsillo.",
+    eyebrow: "Procesamiento de Visión",
+    title: "Procesamiento local de visión por computadora.",
     description:
-      "RPi 4 con 4 GB: inferencia local, sin nube, sin latencia de red.",
+      "La Raspberry Pi 4 adquiere y procesa las imágenes de la cámara para detectar obstáculos y riesgos que no pueden identificarse únicamente con el sensor de distancia. El procesamiento se realiza localmente, sin dependencia de servicios en la nube.",
     specs: [
-      { icon: "🧠", text: "Raspberry Pi 4" },
-      { icon: "📷", text: "Cámara RPi v2" },
+      { icon: "🧠", text: "Raspberry Pi 4 Model B (4 GB)" },
+      { icon: "📷", text: "Raspberry Pi Camera Module" },
+      { icon: "👁️", text: "Detección de obstáculos mediante visión por computadora" },
     ],
   },
   {
     from: 0.58,
     eyebrow: "Visión Computacional",
-    title: "Lo que el sensor no puede ver.",
+    title: "Clasificación de objetos relevantes para la navegación.",
     description:
-      "ToF detecta geometría, no semántica. YOLOv8 Tiny cubre peligros críticos: ramas, escaleras, pozos, vehículos.",
+      "YOLOv8 Tiny complementa al sensor ToF al identificar objetos como personas, bicicletas, motocicletas, vehículos, bancas y señales de tránsito.",
     specs: [
-      { icon: "⚠️", text: "Peligros: ramas · escaleras · pozos" },
+      { icon: "⚠️", text: "Personas · bicicletas · motocicletas · vehículos · bancas · señales" },
       { icon: "🎯", text: "YOLOv8 Tiny" },
+      { icon: "🖥️", text: "Inferencia local en Raspberry Pi 4" },
     ],
   },
   {
     from: 0.66,
-    eyebrow: "Dataset Propio",
-    title: "Entrenado para los peligros que nadie etiquetó.",
+    eyebrow: "Entrenamiento del Modelo",
+    title: "Ajuste fino del modelo sobre clases de interés.",
     description:
-      "Dataset en Roboflow con obstáculos peligrosos para ciegos. Validado en campo.",
+      "Se realizó un fine-tuning de YOLOv8 a partir del modelo preentrenado en COCO, conservando únicamente las clases relevantes para la navegación de personas con discapacidad visual.",
     specs: [
-      { icon: "🏷️", text: "Dataset custom — Roboflow" },
-      { icon: "👤", text: "Validación con usuario invidente" },
+      { icon: "🏷️", text: "Fine-tuning de YOLOv8 sobre COCO" },
+      { icon: "🎯", text: "Clases de interés para navegación" },
+      { icon: "🧪", text: "Validación experimental en campo" },
     ],
   },
   {
     from: 0.74,
-    eyebrow: "Visual Servoing",
-    title: "La cámara le da prioridad al peligro.",
+    eyebrow: "Fusión Sensorial",
+    title: "Priorización de objetos detectados por visión.",
     description:
-      "El servo interrumpe el barrido ante escaleras descendentes para medición exacta.",
+      "Cuando la cámara identifica un objeto relevante, el sistema interrumpe temporalmente el barrido y orienta el sensor hacia la región detectada para obtener una medición de distancia más precisa.",
     specs: [
-      { icon: "🚨", text: "Interrupción por riesgo crítico" },
-      { icon: "📏", text: "Fusión cámara + ToF" },
+      { icon: "🚨", text: "Priorización automática de objetos" },
+      { icon: "🎯", text: "Reorientación del sensor" },
+      { icon: "📏", text: "Medición puntual de distancia" },
     ],
   },
 
   {
     from: 0.91,
-    eyebrow: "Ecosistema Completo",
-    title: "Un dispositivo. Una nueva libertad.",
+    eyebrow: "Ecosistema del Sistema",
+    title: "Dispositivo portátil de asistencia para percepción del entorno.",
     description:
-      "Percepción háptica + visión semántica + navegación autónoma. HapticVision AI no reemplaza los sentidos — los amplifica.",
+      "Integración de percepción háptica, visión por computadora y sensado de profundidad para apoyar la navegación de personas con discapacidad visual. Todo el procesamiento se realiza de forma local en el dispositivo.",
     specs: [
-      { icon: "🔋", text: "Power Bank 10 000 mAh" },
-      { icon: "🌐", text: "100% Edge — sin dependencia de red" },
+      { icon: "🔋", text: "Alimentación: Power bank 10 000 mAh" },
+      { icon: "🌐", text: "Procesamiento 100% en el borde (Edge), sin dependencia de red" },
+      { icon: "📡", text: "Sistema integrado de sensores y retroalimentación háptica" },
     ],
   },
 ]
 
 export default function Home() {
   return (
-    <main>
+    <main style={{ width: "100%", overflowX: "hidden" }}>
       {/* ── Hero ── */}
       <section className="h-screen flex flex-col items-center justify-center bg-transparent overflow-hidden">
-        <div className="relative w-full" style={{ height: "55vh" }}>
+        <div className="relative w-full" style={{ height: "clamp(28vh, 40vw, 55vh)" }}>
           <ASCIIText
             text="HAPTIC VISION"
             enableWaves={true}
@@ -151,9 +161,9 @@ export default function Home() {
             planeBaseHeight={9}
           />
         </div>
-        <div className="flex flex-col items-center gap-4 mt-4">
+        <div className="flex flex-col items-center gap-3 mt-4 px-6 text-center">
           {/* Line 1 — tagline */}
-          <p className="text-gray-800 text-2xl font-medium tracking-wide">
+          <p className="text-gray-800 font-medium tracking-wide" style={{ fontSize: "clamp(0.9rem, 3.5vw, 1.5rem)" }}>
             <DecryptedText
               text="Dispositivo de asistencia visual para personas invidentes"
               animateOn="view"
@@ -166,7 +176,7 @@ export default function Home() {
           </p>
 
           {/* Line 2 — keywords */}
-          <p className="text-base tracking-[0.15em] uppercase">
+          <p style={{ fontSize: "clamp(0.65rem, 2vw, 1rem)", letterSpacing: "0.12em" }} className="uppercase">
             <DecryptedText
               text="Percepción háptica · Visión semántica · Edge AI"
               animateOn="view"
@@ -178,7 +188,7 @@ export default function Home() {
             />
           </p>
 
-          <p className="mt-6 text-gray-400 text-sm animate-bounce">↓ scroll</p>
+          <p className="mt-4 text-gray-400 text-xs animate-bounce">↓ scroll</p>
         </div>
       </section>
 
@@ -193,20 +203,18 @@ export default function Home() {
       />
 
       {/* ── Galería circular ── */}
-      <section className="bg-transparent pb-48">
+      <section className="bg-transparent" style={{ paddingBottom: "clamp(32px, 8vw, 96px)" }}>
         {/* Header */}
-        <div className="flex flex-col items-center justify-center pt-24 pb-10">
-          <p className="text-xs font-semibold tracking-[0.28em] uppercase text-indigo-500 mb-3">
-            Hardware del Sistema
-          </p>
-          <h2 className="text-5xl font-bold text-gray-900 text-center">
+        <div className="flex flex-col items-center justify-center px-6" style={{ paddingTop: "clamp(32px, 6vw, 80px)", paddingBottom: "clamp(20px, 4vw, 40px)" }}>
+          <span className="section-eyebrow">Hardware del Sistema</span>
+          <h2 style={{ fontSize: "clamp(1.6rem, 5vw, 3rem)", fontWeight: 800, color: "#0f0f14", textAlign: "center", letterSpacing: "-0.03em", lineHeight: 1.1 }}>
             Cada pieza importa.
           </h2>
-          <p className="text-gray-400 mt-4 text-base">Arrastra para explorar los componentes</p>
+          <p className="text-gray-400 mt-3" style={{ fontSize: "clamp(0.85rem, 2.5vw, 1rem)" }}>Arrastra para explorar los componentes</p>
         </div>
 
-        {/* Gallery — extra bottom padding to show the info panel */}
-        <div style={{ height: "720px", position: "relative", overflow: "hidden" }}>
+        {/* Gallery — height adapts to viewport */}
+        <div style={{ height: "clamp(320px, 55vw, 720px)", position: "relative", overflow: "hidden" }}>
           <CircularGallery
             bend={3}
             textColor="#1e1b4b"
@@ -273,73 +281,79 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="h-24 md:h-40" aria-hidden="true" />
+      <div className="h-8 md:h-16" aria-hidden="true" />
 
       {/* ── Módulos del Sistema ── */}
-      <section className="bg-transparent pt-56 pb-72 px-6 md:pt-80">
-        <div className="max-w-7xl mx-auto">
+      <section style={{ width: "100%", padding: "clamp(40px,8vw,96px) clamp(16px,4vw,24px)" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", width: "100%" }}>
           {/* Header */}
-          <div className="flex flex-col items-center text-center mb-64 pt-8 md:pt-16">
-            <p className="text-xs font-semibold tracking-[0.28em] uppercase text-indigo-500 mb-4">
-              Arquitectura del Sistema
-            </p>
-            <h2 className="text-6xl font-bold text-gray-900 mb-6">
-              Tres módulos. Un solo propósito.
-            </h2>
-            <p className="text-gray-500 mt-2 text-lg max-w-2xl leading-relaxed">
+          <div className="flex flex-col items-center text-center" style={{ marginBottom: "clamp(32px,6vw,64px)" }}>
+            <span className="section-eyebrow">Arquitectura del Sistema</span>
+            <h2 className="section-title">Tres módulos. Un solo propósito.</h2>
+            <p className="section-subtitle">
               HapticVision AI está organizado en tres capas especializadas que
               trabajan en sinergia para traducir el entorno en percepción háptica.
             </p>
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mt-12 md:mt-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full items-stretch">
 
-          {/* ── Módulo 1: Sistemas de Control ── */}
+          {/* Módulo 1: Sistemas de Control */}
           <div className="module-card">
-            <div className="module-card__icon-wrap" style={{ background: "linear-gradient(135deg,#6366f1 0%,#818cf8 100%)" }}>
-              <span style={{ fontSize: "2rem" }}>⚙️</span>
+            <span className="module-card__number">01</span>
+            <div className="module-card__icon-wrap" style={{ background: "#eef2ff", fontSize: "1.6rem" }}>
+              ⚙️
             </div>
             <p className="module-card__tag">Módulo 1</p>
             <h3 className="module-card__title">Sistemas de Control</h3>
             <p className="module-card__desc">
-              PID en tiempo real. Arduino mantiene estable el escaneo independientemente de los movimientos.
+              Estabilización del sistema mediante control en lazo cerrado. El MPU-6050 (IMU) mide la inclinación de la cabeza y un controlador PID ajusta el eje vertical del pan & tilt para mantener la orientación estable del sensor.
             </p>
+            <div className="module-card__divider" />
             <ul className="module-card__list">
-              <li><span className="module-card__bullet" />Arduino Nano + PCA9685</li>
-              <li><span className="module-card__bullet" />Pan &amp; tilt servo + I²C</li>
+              <li><span className="module-card__bullet" />IMU MPU-6050</li>
+              <li><span className="module-card__bullet" />Control PID en tiempo real</li>
+              <li><span className="module-card__bullet" />Arduino Nano + control de servos SG90</li>
             </ul>
           </div>
 
-          {/* ── Módulo 2: Sistemas Inteligentes ── */}
+          {/* Módulo 2: Sistemas Inteligentes */}
           <div className="module-card module-card--featured">
-            <div className="module-card__icon-wrap" style={{ background: "linear-gradient(135deg,#7c3aed 0%,#a78bfa 100%)" }}>
-              <span style={{ fontSize: "2rem" }}>🧠</span>
+            <span className="module-card__number" style={{ color: "#ede9fe" }}>02</span>
+            <div className="module-card__icon-wrap" style={{ background: "#f5f3ff", fontSize: "1.6rem" }}>
+              🧠
             </div>
             <p className="module-card__tag" style={{ color: "#7c3aed" }}>Módulo 2</p>
             <h3 className="module-card__title">Sistemas Inteligentes</h3>
             <p className="module-card__desc">
-              YOLOv8 Tiny en Raspberry Pi detecta peligros críticos: escaleras, ramas, pozos. Sin nube.
+              Procesamiento de visión en Raspberry Pi 4. Modelo YOLOv8 Tiny ajustado mediante fine-tuning desde COCO para detección de objetos relevantes en navegación.
             </p>
+            <div className="module-card__divider" />
             <ul className="module-card__list">
-              <li><span className="module-card__bullet" style={{ background: "#7c3aed" }} />Raspberry Pi 4 + YOLOv8</li>
-              <li><span className="module-card__bullet" style={{ background: "#7c3aed" }} />Dataset personalizado en Roboflow</li>
+              <li><span className="module-card__bullet" style={{ background: "#f5f3ff" }}>&#8203;</span>Raspberry Pi 4 + YOLOv8 Tiny</li>
+              <li><span className="module-card__bullet" style={{ background: "#f5f3ff" }}>&#8203;</span>Fine-tuning con dataset en Roboflow</li>
+              <li><span className="module-card__bullet" style={{ background: "#f5f3ff" }}>&#8203;</span>Detección de personas, vehículos, bicicletas, motocicletas, bancas y señales de tránsito</li>
             </ul>
           </div>
 
-          {/* ── Módulo 3: Sistemas Electrónicos ── */}
+          {/* Módulo 3: Sistemas Electrónicos */}
           <div className="module-card">
-            <div className="module-card__icon-wrap" style={{ background: "linear-gradient(135deg,#0ea5e9 0%,#38bdf8 100%)" }}>
-              <span style={{ fontSize: "2rem" }}>⚡</span>
+            <span className="module-card__number">03</span>
+            <div className="module-card__icon-wrap" style={{ background: "#e0f2fe", fontSize: "1.6rem" }}>
+              ⚡
             </div>
             <p className="module-card__tag" style={{ color: "#0ea5e9" }}>Módulo 3</p>
             <h3 className="module-card__title">Sistemas Electrónicos</h3>
             <p className="module-card__desc">
-              ToF + IMU + 6 motores hápticos en un armazón compacto y portable.
+              Integración de sensores, actuadores y alimentación del sistema háptico portátil.
             </p>
+            <div className="module-card__divider" />
             <ul className="module-card__list">
-              <li><span className="module-card__bullet" style={{ background: "#0ea5e9" }} />ToF VL53L1X + IMU + 6 motores ERM</li>
-              <li><span className="module-card__bullet" style={{ background: "#0ea5e9" }} />Power bank 10 000 mAh</li>
+              <li><span className="module-card__bullet" style={{ background: "#e0f2fe" }}>&#8203;</span>ToF VL53L0X + IMU MPU-6050</li>
+              <li><span className="module-card__bullet" style={{ background: "#e0f2fe" }}>&#8203;</span>4 motores vibratorios ERM</li>
+              <li><span className="module-card__bullet" style={{ background: "#e0f2fe" }}>&#8203;</span>Driver ULN2003A + PCA9685</li>
+              <li><span className="module-card__bullet" style={{ background: "#e0f2fe" }}>&#8203;</span>Power bank 10 000 mAh</li>
             </ul>
           </div>
 
@@ -350,18 +364,14 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════════════════════
           SECCIÓN: METODOLOGÍA DE INVESTIGACIÓN
       ══════════════════════════════════════════════════════════════════ */}
-      <section className="bg-transparent py-48 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section style={{ width: "100%", padding: "clamp(40px,8vw,96px) clamp(16px,4vw,24px)" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", width: "100%" }}>
 
           {/* ── Header ── */}
-          <div className="flex flex-col items-center text-center mb-36">
-            <p className="text-xs font-semibold tracking-[0.28em] uppercase text-indigo-500 mb-4">
-              Metodología de Investigación
-            </p>
-            <h2 className="text-6xl font-bold text-gray-900 mb-6">
-              Del problema a la solución.
-            </h2>
-            <p className="text-gray-500 mt-2 text-lg max-w-2xl leading-relaxed">
+          <div className="flex flex-col items-center text-center" style={{ marginBottom: "clamp(28px,5vw,64px)" }}>
+            <span className="section-eyebrow">Metodología de Investigación</span>
+            <h2 className="section-title">Del problema a la solución.</h2>
+            <p className="section-subtitle">
               Identificación, prototipado, validación en campo y mejora continua.
             </p>
           </div>
@@ -402,65 +412,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ────────────────────────────────────────────────────────────
-              BLOQUE 2 — USO REAL CON PERSONAS INVIDENTES
-          ──────────────────────────────────────────────────────────── */}
-          <div className="research-block research-block--accent-violet">
-            <div className="research-block__label">
-              <span className="research-dot research-dot--violet" />
-              Validación en campo
-            </div>
-            <h3 className="research-block__title">
-              Uso real con personas invidentes.
-            </h3>
-            <p className="research-block__desc">
-              El prototipo fue probado en sesiones controladas con un usuario
-              invidente real en entornos cotidianos: pasillos universitarios,
-              escaleras y zonas con obstáculos dinámicos. Los resultados
-              validaron la intuitividad de la codificación háptica y
-              permitieron ajustar la intensidad de los motores ERM y el
-              algoritmo APF.
-            </p>
-            <div className="research-timeline">
-              {[
-                {
-                  phase: "Fase 1",
-                  color: "#6366f1",
-                  title: "Entrevista de necesidades",
-                  desc: "Sesiones con usuarios invidentes para mapear los escenarios de mayor riesgo y las limitaciones de sus herramientas actuales.",
-                },
-                {
-                  phase: "Fase 2",
-                  color: "#7c3aed",
-                  title: "Prototipado iterativo",
-                  desc: "Construcción de 3 versiones del armazón, ajustando posición de motores, ángulo del sensor y ergonomía del mecanismo pan & tilt.",
-                },
-                {
-                  phase: "Fase 3",
-                  color: "#0ea5e9",
-                  title: "Pruebas en campo",
-                  desc: "El usuario navegó 15 minutos con el dispositivo en un entorno con obstáculos variados. Se registraron colisiones, tiempos de reacción y feedback subjetivo.",
-                },
-                {
-                  phase: "Fase 4",
-                  color: "#10b981",
-                  title: "Ajuste y validación",
-                  desc: "Con base en el feedback, se recalibró el umbral háptico, se reentrenó YOLOv8 con más imágenes de escaleras y se redujo la latencia del PID en 18 ms.",
-                },
-              ].map((item) => (
-                <div key={item.phase} className="research-timeline__item">
-                  <div className="research-timeline__dot" style={{ background: item.color }} />
-                  <div className="research-timeline__content">
-                    <span className="research-timeline__phase" style={{ color: item.color }}>
-                      {item.phase}
-                    </span>
-                    <strong className="research-timeline__step">{item.title}</strong>
-                    <p className="research-timeline__desc">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+
 
           {/* ────────────────────────────────────────────────────────────
               BLOQUE 3 — COMPARACIÓN CON SOLUCIONES SIMILARES
@@ -497,7 +449,6 @@ export default function Home() {
                     ["Costo accesible (<$300)", "✅", "✅", "❌", "✅"],
                     ["Tiempo real (<100 ms)", "✅", "✅", "❌", "❌"],
                     ["Portátil y autónomo", "✅", "✅", "✅", "❌"],
-                    ["Dataset personalizado", "✅", "N/A", "❌", "❌"],
                   ].map(([criterion, ...vals]) => (
                     <tr key={criterion}>
                       <td>{criterion}</td>
@@ -572,9 +523,9 @@ export default function Home() {
                   ],
                 },
               ].map((h) => (
-                <div key={h.horizon} className="research-roadmap__lane" style={{ background: h.bg, borderColor: h.color + "30" }}>
+                <div key={h.horizon} className="research-roadmap__lane" style={{ borderTopColor: h.color }}>
                   <div className="research-roadmap__header">
-                    <span className="research-roadmap__tag" style={{ color: h.color, background: h.color + "18" }}>
+                    <span className="research-roadmap__tag" style={{ color: h.color }}>
                       {h.horizon}
                     </span>
                     <span className="research-roadmap__period">{h.period}</span>

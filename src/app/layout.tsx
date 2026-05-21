@@ -13,9 +13,14 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "Haptic Presentation — Scroll Sequence Demo",
+  title: "HapticVision AI — Dispositivo de Asistencia Visual",
   description:
-    "Immersive Apple-style scroll sequence built with Next.js, GSAP ScrollTrigger, and Canvas API.",
+    "HapticVision AI traduce el entorno en percepción háptica para personas con discapacidad visual. Tres módulos: control PID, visión YOLOv8 y electrónica compacta.",
+  openGraph: {
+    title: "HapticVision AI",
+    description: "Dispositivo de asistencia visual con percepción háptica e inteligencia artificial en el borde.",
+    type: "website",
+  },
 }
 
 export default function RootLayout({

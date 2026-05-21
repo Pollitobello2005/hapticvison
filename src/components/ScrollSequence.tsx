@@ -159,25 +159,22 @@ export default function ScrollSequence({
         </div>
       )}
 
-      {/* ── Left — canvas ── */}
-      <div
-        className="absolute top-0 left-0 h-full flex items-center"
-        style={{ width: "44%" }}
-      >
-        <canvas
-          ref={canvasRef}
-          width={width}
-          height={height}
-          className="w-full h-auto object-contain"
-          style={{ mixBlendMode: "multiply", filter: "brightness(1.08)" }}
-        />
-      </div>
+      {/* Centered columns container */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-full max-w-7xl flex h-full">
+          {/* Left — canvas column */}
+          <div className="h-full flex items-center" style={{ width: "44%" }}>
+            <canvas
+              ref={canvasRef}
+              width={width}
+              height={height}
+              className="w-full h-auto object-contain"
+              style={{ mixBlendMode: "multiply", filter: "brightness(1.08)" }}
+            />
+          </div>
 
-      {/* ── Right — description panel ── */}
-      <div
-        className="absolute top-0 right-0 h-full flex flex-col justify-center px-10 pr-20"
-        style={{ width: "56%" }}
-      >
+          {/* Right — description panel */}
+          <div className="h-full flex flex-col justify-center px-10 pr-20" style={{ width: "56%" }}>
         {/* Progress bar — thin horizontal line */}
         <div className="mb-10 w-full max-w-md">
           <div className="h-px bg-gray-200 rounded-full overflow-hidden">
@@ -231,5 +228,7 @@ export default function ScrollSequence({
         </div>
       </div>
     </div>
+  </div>
+  </div>
   )
 }
