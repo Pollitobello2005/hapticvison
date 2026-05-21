@@ -169,7 +169,7 @@ export default function ScrollSequence({
               width={width}
               height={height}
               className="w-full h-auto object-contain"
-              style={{ mixBlendMode: "multiply", filter: "brightness(1.08)" }}
+              style={{ mixBlendMode: "multiply", filter: "brightness(1.08)", transform: "translateX(-40px)" }}
             />
           </div>
 

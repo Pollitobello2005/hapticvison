@@ -25,9 +25,9 @@ const CHAPTERS: Chapter[] = [
   {
     from: 0.09,
     eyebrow: "Matriz Háptica",
-    title: "6 motores. Una frente. Un mapa.",
+    title: "4 motores. Una frente. Un mapa.",
     description:
-      "Arreglo lineal de 4 motores vibratorios tipo moneda integrados en la diadema. Cada motor representa una región del entorno y su intensidad de vibración varía según la distancia al obstáculo.",
+      "Arreglo lineal de 4 motores vibratorios tipo moneda integrados a lo largo del armazón superior del lente. Cada motor representa una región del entorno y su intensidad de vibración varía según la distancia al obstáculo.",
     specs: [
       { icon: "🖐️", text: "4 × Motores vibratorios tipo moneda (ERM)" },
       { icon: "🎛️", text: "Control mediante PCA9685" },
@@ -51,7 +51,7 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Estabilización Inercial",
     title: "Estabilización inercial del sistema de percepción.",
     description:
-      "La unidad de medición inercial (IMU) MPU-6050 detecta la inclinación de la cabeza del usuario. Un controlador PID ajusta automáticamente el eje vertical del mecanismo pan & tilt para mantener el sensor alineado con el horizonte. Esto evita mediciones erróneas cuando el usuario inclina la cabeza hacia arriba o hacia abajo.",
+      "La IMU MPU-6050 detecta la inclinación de la cabeza. Un control PID compensa en tiempo real el eje vertical del pan & tilt para mantener el sensor ToF nivelado con el horizonte, evitando falsas lecturas al mirar arriba o abajo.",
     specs: [
       { icon: "🧭", text: "IMU MPU-6050" },
       { icon: "🎯", text: "Control PID en lazo cerrado" },
@@ -75,10 +75,11 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Navegación",
     title: "Campos de fuerza que dibujan el camino.",
     description:
-      "Algoritmo APF: cada obstáculo repele, la resultante señala la ruta libre en vibración.",
+      "El Algoritmo APF (Campos Potenciales Artificiales) dirige el mecanismo pan & tilt y la respuesta háptica priorizando obstáculos según su distancia e importancia semántica. Por ejemplo, un vehículo a media distancia representa mayor riesgo que un peatón cercano.",
     specs: [
-      { icon: "🗺️", text: "Algoritmo APF" },
-      { icon: "↔️", text: "Vibración izquierda/derecha" },
+      { icon: "🗺️", text: "Algoritmo APF (Campos Potenciales)" },
+      { icon: "🔄", text: "Control dinámico de Pan & Tilt" },
+      { icon: "🚨", text: "Priorización por riesgo y distancia" },
     ],
   },
 
@@ -238,7 +239,7 @@ export default function Home() {
                 image: "/gallery/haptic_matrix.png",
                 text: "Matriz Háptica",
                 description:
-                  "Arreglo de 6 motores ERM Coin en el armazón, controlados por un driver PCA9685 vía I²C. Cada motor representa una zona del entorno: intensidad = proximidad del obstáculo.",
+                  "Arreglo de 4 motores ERM Coin en el armazón, controlados por un driver PCA9685 vía I²C. Cada motor representa una zona del entorno: intensidad = proximidad del obstáculo.",
               },
               {
                 image: "/gallery/imu.png",
